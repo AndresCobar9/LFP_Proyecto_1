@@ -1,8 +1,8 @@
 from tkinter import END, Tk, Label, Button, Entry, Text
 import tkinter
-import Clases.AFN
+import Clases.AFD
 from tkinter import messagebox
-class AgregarAFN(tkinter.Toplevel):
+class AgregarAFD(tkinter.Toplevel):
     def __init__(self):
         super().__init__()
         self.geometry("880x700")
@@ -33,7 +33,7 @@ class AgregarAFN(tkinter.Toplevel):
 
         self.label_2 = Label(
             self,
-            text="Agregar AFN",
+            text="Agregar AFD",
             bg="#FFFFFF",
             fg="#000000",
             font=("Happy Monkey", 48)
@@ -158,7 +158,7 @@ class AgregarAFN(tkinter.Toplevel):
             )
         
         def Agregar():
-            if agregarAFN(
+            if agregarAFD(
                 self.entry_1.get(),
                 self.entry_3.get().split(","),
                 self.entry_2.get().split(","),
@@ -188,28 +188,27 @@ class AgregarAFN(tkinter.Toplevel):
 
 
 
-def agregarAFN(nombre, estados, alfabeto, estado_inicial, estados_aceptacion, transiciones):
+def agregarAFD(nombre, estados, alfabeto, estado_inicial, estados_aceptacion, transiciones):
     del transiciones[-1]
     print(nombre, estados, alfabeto, estado_inicial, estados_aceptacion, transiciones)
     #Comprobaciones que no esten vaciosf
     
     for elemento in alfabeto:
         if elemento == "ε":
-            break
-        elif elemento >= alfabeto[-1] :
-            alfabeto.append("ε")
+            messagebox.showerror(title="Error", message="El símbolo ε no es válido.")
+            return False
     
     print(alfabeto)
     if nombre == "" or estados == "" or alfabeto == "" or estado_inicial == "" or estados_aceptacion == "":
         messagebox.showerror(title="Error", message="Por favor, completa todos los campos.")
         return
     else:
-        if Clases.AFN.verificar_estado_inicial(estado_inicial, estados) == True:
-            if Clases.AFN.estados_aceptacion(estados_aceptacion, estados) == True:
-                if Clases.AFN.verificar_transiciones(transiciones, estados, alfabeto)== True:
-                    if Clases.AFN.verificar_alfabeto(alfabeto)== True:
-                        Clases.AFN.Crear_AFN(nombre, alfabeto, estados, estado_inicial, estados_aceptacion, transiciones)
-                        messagebox.showinfo(title="Exito", message="AFN creado con exito")
+        if Clases.AFD.verificar_estado_inicial(estado_inicial, estados) == True:
+            if Clases.AFD.estados_aceptacion(estados_aceptacion, estados) == True:
+                if Clases.AFD.verificar_transiciones(transiciones, estados, alfabeto)== True:
+                    if Clases.AFD.verificar_alfabeto(alfabeto)== True:
+                        Clases.AFD.Crear_AFD(nombre, alfabeto, estados, estado_inicial, estados_aceptacion, transiciones)
+                        messagebox.showinfo(title="Exito", message="AFD creado con exito")
                         
                         return True
 

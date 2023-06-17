@@ -5,6 +5,7 @@ from tkinter import BOTH, RIGHT, Frame, Label, Tk, Canvas, Entry, Text, Button, 
 from PIL import Image
 
 import Interfaz.ModuloAFN
+import Interfaz.ModuloAFD
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"../assets/frame0")
@@ -49,7 +50,7 @@ class MenuPrincipal(tk.Tk):
             relief="flat",
             font=("Helvetica", 16),
             text="Módulo AFN",
-            command=mostrar_ventana_secundaria
+            command=lambda: mostrar_ventana_secundaria
         )
         button_1.bind("<Enter>", on_enter)
         button_1.bind("<Leave>", on_leave)
@@ -60,7 +61,7 @@ class MenuPrincipal(tk.Tk):
             bg="lightgray",
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_2 clicked"),
+            command=lambda: Interfaz.ModuloAFD.moduloAFD(),
             relief="flat",
             text="Modulo AFD",
             font=("Helveltica", 16),

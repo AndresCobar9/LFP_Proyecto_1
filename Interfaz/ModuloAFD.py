@@ -3,17 +3,18 @@ from tkinter import *
 import tkinter as tk
 import Interfaz.MenuPrincipal
 from PIL import Image
-import Interfaz.AgregarAFN
-import Interfaz.ValidarCadena
-import Interfaz.GenerarReporteAFN
-import Interfaz.AyudaAFN
+import Interfaz.AgregarAFD
+import Interfaz.ValidarCadenaAFD
+import Interfaz.AyudaAFD
+import Interfaz.GenerarReporteAFD
+
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"../assets/frame0")
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
-class moduloAFN(tk.Toplevel):
+class moduloAFD(tk.Toplevel):
     def __init__(self):
         super().__init__()
         self.image_1 = PhotoImage(file=relative_to_assets("image_1.png"))
@@ -43,8 +44,9 @@ class moduloAFN(tk.Toplevel):
             highlightthickness=0,
             relief="flat",
             font=("Helvetica", 16),
-            text="Crear AFN",
-            command=lambda: Interfaz.AgregarAFN.AgregarAFN()
+            text="Crear AFD",
+            command=lambda: Interfaz.AgregarAFD.AgregarAFD()
+            
         )
         button_1.bind("<Enter>", on_enter)
         button_1.bind("<Leave>", on_leave)
@@ -55,10 +57,10 @@ class moduloAFN(tk.Toplevel):
             bg="#2CCCEF",
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: Interfaz.ValidarCadena.ValidarCadena(),
             relief="flat",
             text="Evaluar Cadena",
             font=("Helveltica", 16),
+            command=lambda: Interfaz.ValidarCadenaAFD.ValidarCadenaAFD()
         )
         button_2.place(
             x=0.0,
@@ -74,8 +76,7 @@ class moduloAFN(tk.Toplevel):
             bg="#2CCCEF",
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: Interfaz.AyudaAFN.AyudaAFN(),
-            relief="flat",
+                      relief="flat",
             font=("Helveltica", 16),
             text="Ayuda"
         )
@@ -110,10 +111,9 @@ class moduloAFN(tk.Toplevel):
             bg="#2CCCEF",
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: Interfaz.GenerarReporteAFN.GenerarReporteAFN(),
             relief="flat",
             font=("Helveltica", 16),
-            text="Generar Reporte AFN"
+            text="Generar Reporte AFD"
         )
         button_5.place(
             x=0.0,
@@ -152,7 +152,7 @@ class moduloAFN(tk.Toplevel):
 
         label4 = Label(
             self,
-            text="MODULO AFN",
+            text="MODULO AFD",
             font=("Happy Monkey", 48),
             fg="#000000",
             bg="#FFFFFF"

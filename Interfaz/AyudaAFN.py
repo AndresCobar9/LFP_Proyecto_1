@@ -2,7 +2,7 @@ from tkinter import END, Tk, Label, Button, Entry, Text
 import tkinter
 import Clases.AFN
 from tkinter import messagebox
-class AgregarAFN(tkinter.Toplevel):
+class AyudaAFN(tkinter.Toplevel):
     def __init__(self):
         super().__init__()
         self.geometry("880x700")
@@ -49,12 +49,12 @@ class AgregarAFN(tkinter.Toplevel):
         )
         self.label_3.place(x=102.0, y=148.0, anchor="nw")
 
-        self.entry_1 = Entry(
-            self,
-            bd=0,
-            bg="#D9D9D9",
-            fg="#000716",
-            highlightthickness=0
+        self.entry_1 = Label(
+             self,
+            text="Cualquier Nombre que Desee",
+            bg="#FFFFFF",
+            fg="#000000",
+            font=("Happy Monkey", 18)
         )
         self.entry_1.place(x=265.0, y=146.0, width=621.0, height=34.0)
 
@@ -67,12 +67,12 @@ class AgregarAFN(tkinter.Toplevel):
         )
         self.label_4.place(x=100.0, y=193.0, anchor="nw")
 
-        self.entry_2 = Entry(
-            self,
-            bd=0,
-            bg="#D9D9D9",
-            fg="#000716",
-            highlightthickness=0
+        self.entry_2 = Label(
+             self,
+            text="Formato: a,b,c,...",
+            bg="#FFFFFF",
+            fg="#000000",
+            font=("Happy Monkey", 18)
         )
         self.entry_2.place(x=265.0, y=195.0, width=621.0, height=34.0)
 
@@ -85,12 +85,12 @@ class AgregarAFN(tkinter.Toplevel):
         )
         self.label_5.place(x=101.0, y=242.0, anchor="nw")
 
-        self.entry_3 = Entry(
+        self.entry_3 = Label(
             self,
-            bd=0,
-            bg="#D9D9D9",
-            fg="#000716",
-            highlightthickness=0
+            text="Formato: q0,q1,q2,...",
+            bg="#FFFFFF",
+            fg="#000000",
+            font=("Happy Monkey", 18)
         )
         self.entry_3.place(x=265.0, y=244.0, width=621.0, height=34.0)
 
@@ -103,12 +103,12 @@ class AgregarAFN(tkinter.Toplevel):
         )
         self.label_6.place(x=71.0, y=294.0, anchor="nw")
 
-        self.entry_4 = Entry(
-            self,
-            bd=0,
-            bg="#D9D9D9",
-            fg="#000716",
-            highlightthickness=0
+        self.entry_4 = Label(
+             self,
+            text="Formato: q0  (Solamente 1 Estado Inicial)",
+            bg="#FFFFFF",
+            fg="#000000",
+            font=("Happy Monkey", 18)
         )
         self.entry_4.place(x=265.0, y=293.0, width=621.0, height=34.0)
 
@@ -130,47 +130,25 @@ class AgregarAFN(tkinter.Toplevel):
         )
         self.label_8.place(x=64.0, y=393.0, anchor="nw")
 
-        self.entry_5 = Entry(
+        self.entry_5 = Label(
             self,
-            bd=0,
-            bg="#D9D9D9",
-            fg="#000716",
-            highlightthickness=0
+            text="Formato: q0;q1;q2...",
+            bg="#FFFFFF",
+            fg="#000000",
+            font=("Happy Monkey", 18)
         )
         self.entry_5.place(x=265.0, y=342.0, width=621.0, height=34.0)
 
-        self.text_1 = Text(
+        self.text_1 = Label(
             self,
-            bg="#D9D9D9",
-            fg="#000716",
-            highlightthickness=0
+            text="---- Formato ----\nq0,a,q1\nq1,b,q2\nq2,c,q3\n...",
+            bg="#FFFFFF",
+            fg="#000000",
+            font=("Happy Monkey", 18)
         )
-        self.text_1.place(x=265.0, y=393.0, width=621.0, height=195.0)
+        self.text_1.place(x=265.0, y=385.0, width=621.0, height=195.0)
 
-        self.button_5 = Button(
-            self,
-            borderwidth=0,
-            highlightthickness=0,
-            bg="lightgray",
-            relief="flat",
-            text = "AGREGAR",
-            command=lambda: Agregar()
-            )
-        
-        def Agregar():
-            if agregarAFN(
-                self.entry_1.get(),
-                self.entry_3.get().split(","),
-                self.entry_2.get().split(","),
-                self.entry_4.get(),
-                self.entry_5.get().split(";"),
-                self.text_1.get("1.0", tkinter.END).split("\n")
-                ) == True: self.entry_1.delete(0, END), self.entry_2.delete(0, END), self.entry_3.delete(0, END), self.entry_4.delete(0, END), self.entry_5.delete(0, END), self.text_1.delete("1.0", tkinter.END)
-
-        self.button_5.bind("<Enter>", on_enter)
-        self.button_5.bind("<Leave>", on_leave)
-        self.button_5.place(x=2.0, y=478.0, width=250.0, height=100.0)
-
+    
         self.button_6 = Button(
             self,
             borderwidth=0,
@@ -185,33 +163,3 @@ class AgregarAFN(tkinter.Toplevel):
         self.button_6.place(x=2.0, y=578, width=250.0, height=100.0)
 
         self.resizable(False, False)
-
-
-
-def agregarAFN(nombre, estados, alfabeto, estado_inicial, estados_aceptacion, transiciones):
-    del transiciones[-1]
-    print(nombre, estados, alfabeto, estado_inicial, estados_aceptacion, transiciones)
-    #Comprobaciones que no esten vaciosf
-    
-    for elemento in alfabeto:
-        if elemento == "ε":
-            break
-        elif elemento >= alfabeto[-1] :
-            alfabeto.append("ε")
-    
-    print(alfabeto)
-    if nombre == "" or estados == "" or alfabeto == "" or estado_inicial == "" or estados_aceptacion == "":
-        messagebox.showerror(title="Error", message="Por favor, completa todos los campos.")
-        return
-    else:
-        if Clases.AFN.verificar_estado_inicial(estado_inicial, estados) == True:
-            if Clases.AFN.estados_aceptacion(estados_aceptacion, estados) == True:
-                if Clases.AFN.verificar_transiciones(transiciones, estados, alfabeto)== True:
-                    if Clases.AFN.verificar_alfabeto(alfabeto)== True:
-                        Clases.AFN.Crear_AFN(nombre, alfabeto, estados, estado_inicial, estados_aceptacion, transiciones)
-                        messagebox.showinfo(title="Exito", message="AFN creado con exito")
-                        
-                        return True
-
-        
-    
