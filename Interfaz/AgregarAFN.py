@@ -229,13 +229,9 @@ def agregarAFN(nombre, estados, alfabeto, estado_inicial, estados_aceptacion, tr
         return
     else:
         if Clases.AFN.verificar_estado_inicial(estado_inicial, estados) == True:
-            print("Estado inicial correcto")
             if Clases.AFN.estados_aceptacion(estados_aceptacion, estados) == True:
-                print("Estados de aceptacion correctos")
                 if Clases.AFN.verificar_transiciones(transiciones, estados, alfabeto)== True:
-                    print("Transiciones correctas")
                     if Clases.AFN.verificar_alfabeto(alfabeto)== True:
-                        print("Alfabeto correcto")
                         Clases.AFN.Crear_AFN(nombre, alfabeto, estados, estado_inicial, estados_aceptacion, transiciones)
                         messagebox.showinfo(title="Exito", message="AFN creado con exito")
                         

@@ -5,6 +5,7 @@ import Interfaz.MenuPrincipal
 from PIL import Image
 import Interfaz.AgregarAFN
 import Interfaz.ValidarCadena
+import Interfaz.GenerarReporteAFN
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"../assets/frame0")
 
@@ -108,7 +109,7 @@ class moduloAFN(tk.Toplevel):
             bg="#2CCCEF",
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_5 clicked"),
+            command=lambda: Interfaz.GenerarReporteAFN.GenerarReporteAFN(),
             relief="flat",
             font=("Helveltica", 16),
             text="Generar Reporte AFN"

@@ -1,0 +1,7 @@
+digraph "Prueba AFN" {
+	rankdir=LR size="8,5"
+	a [color=red shape=circle]
+	b [shape=doublecircle]
+	a -> b [label=1]
+	a -> a [label=0]
+}

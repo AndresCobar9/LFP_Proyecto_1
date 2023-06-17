@@ -11,7 +11,7 @@ class AFN:
         self.estado_inicial = estado_inicial
         self.estados_aceptacion = estados_aceptacion
         self.transiciones = {}
-
+        self.transicionesN = transiciones
         for transicion in transiciones:
             origen, entrada, destino = transicion.split(',')
             self.transiciones.setdefault(origen, {})[entrada] = destino
@@ -34,6 +34,7 @@ def generar_cadena_ejemplo(afn):
     while True:
         transiciones = afn.transiciones.get(estado_actual)
         if not transiciones:
+            messagebox.showerror(title="Error", message="No hay transiciones disponibles desde el estado actual")
             # No hay transiciones disponibles desde el estado actual
             break
         
@@ -44,10 +45,9 @@ def generar_cadena_ejemplo(afn):
 
         if estado_actual in afn.estados_aceptacion:
             # Se alcanzó un estado de aceptación, la cadena es válida
-            print(f"Cadena de ejemplo generada: {cadena}")
             return cadena
 
-    print("No se pudo generar una cadena de ejemplo")
+    messagebox.showerror(title="Error", message="No se pudo generar una cadena de ejemplo")
     return None
 
 def verificar_alfabeto(alfabeto):
@@ -76,21 +76,19 @@ def estados_aceptacion(estados_aceptacion, estados):
 
 
 def verificar_transiciones(transiciones, estados, alfabeto):
-    print(transiciones)
     for transicion in transiciones:
-        print("transicion", transicion)
         
         elementos = transicion.split(",")
         if len(elementos) != 3:
-            print("error transicion tiene más de 3 elementos")
+            messagebox.showerror(title="Error", message="Las transiciones deben tener 3 elementos")
             return False
         origen, entrada, destino = transicion.split(',')
 
         if origen not in estados or destino not in estados:
-            print("error origen o destino no están en estados")
+            messagebox.showerror(title="Error", message="Los estados de origen y destino deben estar en la lista de estados")
             return False
         if entrada not in alfabeto:
-            print("error la transicion no está en estados")
+            messagebox.showerror(title="Error", message="El símbolo de entrada no está en el alfabeto")
             return False
 
     return True
@@ -102,9 +100,6 @@ def Crear_AFN(nombre, estados, alfabeto, estado_inicial, estados_aceptacion, tra
 
 
 def listaAFN():
-    print("Lista de AFN registrados:")
-    for afn in afn_registrados:
-        print(afn)
     return afn_registrados
 
 
@@ -118,12 +113,12 @@ def comprobar_cadena_afn(afn, cadena):
     for caracter in cadena:
         # Verificar si el caracter está en el alfabeto del AFN
         if caracter not in afn.alfabeto:
-            print(f"El caracter '{caracter}' no está en el alfabeto del AFN '{afn.nombre}'")
+            messagebox.showerror(title="Error", message=f"El caracter '{caracter}' no está en el alfabeto del AFN '{afn.nombre}'")
             return False
         
         # Verificar si existe una transición para el estado actual y el caracter actual
         if estado_actual not in afn.transiciones or caracter not in afn.transiciones[estado_actual]:
-            print(f"No hay una transición definida para el estado '{estado_actual}' y el caracter '{caracter}' en el AFN '{afn.nombre}'")
+            messagebox.showerror(title="Error", message=f"No hay una transición definida para el estado '{estado_actual}' y el caracter '{caracter}' en el AFN '{afn.nombre}'")
             return False
         
         # Obtener el nuevo estado a partir de la transición
@@ -131,8 +126,7 @@ def comprobar_cadena_afn(afn, cadena):
     
     # Verificar si el estado actual es un estado de aceptación
     if estado_actual in afn.estados_aceptacion:
-        print(f"La cadena '{cadena}' es válida en el AFN '{afn.nombre}'")
+       
         return f"La cadena '{cadena}' es válida en el AFN '{afn.nombre}'"
     else:
-        print(f"La cadena '{cadena}' no es válida en el AFN '{afn.nombre}'")
         return f"La cadena '{cadena}' no es válida en el AFN '{afn.nombre}'"
