@@ -35,7 +35,6 @@ def generar_cadena_ejemplo(afd):
         transiciones = afd.transiciones.get(estado_actual)
         if not transiciones:
             messagebox.showerror(title="Error", message="No hay transiciones disponibles desde el estado actual")
-            # No hay transiciones disponibles desde el estado actual
             break
         
         transicion = random.choice(list(transiciones.items()))
@@ -44,9 +43,7 @@ def generar_cadena_ejemplo(afd):
         estado_actual = destino
 
         if estado_actual in afd.estados_aceptacion:
-            # Se alcanzó un estado de aceptación, la cadena es válida
             return cadena
-
     messagebox.showerror(title="Error", message="No se pudo generar una cadena de ejemplo")
     return None
 
@@ -104,27 +101,20 @@ def listaAFD():
 
 
 def comprobar_cadena_afd(afd, cadena):
-    # Verificar si la cadena es válida en el AFD utilizando el método de Thompson
-    
-    # Obtener el estado inicial del AFD
+
     estado_actual = afd.estado_inicial
     
-    # Recorrer cada caracter de la cadena
     for caracter in cadena:
-        # Verificar si el caracter está en el alfabeto del AFD
         if caracter not in afd.alfabeto:
             messagebox.showerror(title="Error", message=f"El caracter '{caracter}' no está en el alfabeto del AFD '{afd.nombre}'")
             return False
         
-        # Verificar si existe una transición para el estado actual y el caracter actual
         if estado_actual not in afd.transiciones or caracter not in afd.transiciones[estado_actual]:
             messagebox.showerror(title="Error", message=f"No hay una transición definida para el estado '{estado_actual}' y el caracter '{caracter}' en el AFD '{afd.nombre}'")
             return False
         
-        # Obtener el nuevo estado a partir de la transición
         estado_actual = afd.transiciones[estado_actual][caracter]
     
-    # Verificar si el estado actual es un estado de aceptación
     if estado_actual in afd.estados_aceptacion:
        
         return f"La cadena '{cadena}' es válida en el AFD '{afd.nombre}'"

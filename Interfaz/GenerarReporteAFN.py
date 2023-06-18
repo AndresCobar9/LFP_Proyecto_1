@@ -65,7 +65,7 @@ class GenerarReporteAFN(tk.Toplevel):
             highlightthickness=0,
             relief="flat",
             font=("Helvetica", 16),
-            text="Generar Cadena Y Comprobar",
+            text="Generar PDF",
             command=lambda:generarPDF(self),
         )
         button_1.bind("<Enter>", on_enter)

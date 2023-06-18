@@ -8,6 +8,8 @@ import Interfaz.ModuloAFN
 import Interfaz.ModuloAFD
 import Interfaz.SelectorOptmizador
 import Interfaz.CargaDeArchivos
+
+
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"../assets/frame0")
 
@@ -17,10 +19,6 @@ def relative_to_assets(path: str) -> Path:
 class MenuPrincipal(tk.Tk):
     def __init__(self):
         super().__init__()
-
-       
-            
-            
 
         def on_enter(event):
             event.widget.config(bg="gray", fg="white")
