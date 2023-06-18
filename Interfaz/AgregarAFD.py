@@ -1,6 +1,8 @@
 from tkinter import END, Tk, Label, Button, Entry, Text
 import tkinter
 import Clases.AFD
+import Interfaz.CargaDeArchivos
+
 from tkinter import messagebox
 class AgregarAFD(tkinter.Toplevel):
     def __init__(self):

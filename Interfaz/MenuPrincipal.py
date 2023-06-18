@@ -6,7 +6,8 @@ from PIL import Image
 
 import Interfaz.ModuloAFN
 import Interfaz.ModuloAFD
-
+import Interfaz.SelectorOptmizador
+import Interfaz.CargaDeArchivos
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"../assets/frame0")
 
@@ -79,7 +80,7 @@ class MenuPrincipal(tk.Tk):
             bg="lightgray",
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_3 clicked"),
+            command=lambda: Interfaz.CargaDeArchivos.CargaArchvios(),
             relief="flat",
             font=("Helveltica", 16),
             text="Cargar Archivo"
@@ -117,7 +118,7 @@ class MenuPrincipal(tk.Tk):
             bg="lightgray",
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_5 clicked"),
+            command=lambda: Interfaz.SelectorOptmizador.selectorOptimizador(),
             relief="flat",
             font=("Helveltica", 16),
             text="Modulo OE"
