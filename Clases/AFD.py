@@ -1,84 +1,132 @@
-import tkinter as tk
-from graphviz import Digraph
-import webbrowser
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import A4
-from reportlab.lib.units import cm
-from reportlab.lib import colors
-from PIL import Image
-import Clases.AFD
+import random
+from tkinter import messagebox
 
-def generarDOT(estados, estados_aceptacion, transiciones, estado_inicial, nombre):
-    dot = Digraph(nombre, filename=nombre, format='png')
-    dot.attr(rankdir='LR', size='8,5')
+afd_registrados = []
 
-    estados1 = set(estados).symmetric_difference(set(estados_aceptacion))
-    estados2 = estados1.difference({estado_inicial})
+class AFD:
+    def __init__(self, nombre,  alfabeto, estados, estado_inicial, estados_aceptacion, transiciones):
+        self.nombre = nombre
+        self.alfabeto = alfabeto
+        self.estados = estados
+        self.estado_inicial = estado_inicial
+        self.estados_aceptacion = estados_aceptacion
+        self.transiciones = {}
+        self.transicionesN = transiciones
+        for transicion in transiciones:
+            origen, entrada, destino = transicion.split(',')
+            self.transiciones.setdefault(origen, {})[entrada] = destino
 
-    # Agregar estado inicial con triángulo
-    dot.node(estado_inicial, shape='circle', color='red')
+    def __str__(self):
+        estados_str = ", ".join(self.estados)
+        alfabeto_str = ", ".join(self.alfabeto)
+        estados_aceptacion_str = ", ".join(self.estados_aceptacion)
+        transiciones_str = "\n".join([f"{origen},{entrada},{destino}" for origen, transiciones in self.transiciones.items() for entrada, destino in transiciones.items()])
 
-    for estado in estados2:
-        dot.node(estado, shape='circle')
+        return f"Nombre: {self.nombre}\nEstados: {estados_str}\nAlfabeto: {alfabeto_str}\nEstado Inicial: {self.estado_inicial}\nEstados de Aceptación: {estados_aceptacion_str}\nTransiciones:\n{transiciones_str}"
+    
+   
 
-    for estado_aceptacion in estados_aceptacion:
-        dot.node(estado_aceptacion, shape='doublecircle')
+    
+def generar_cadena_ejemplo(afd):
+    estado_actual = afd.estado_inicial
+    cadena = ""
 
-    for origen, transicion in transiciones.items():
-        for etiqueta, destino in transicion.items():
-            dot.edge(origen, destino, label=etiqueta)
+    while True:
+        transiciones = afd.transiciones.get(estado_actual)
+        if not transiciones:
+            messagebox.showerror(title="Error", message="No hay transiciones disponibles desde el estado actual")
+            # No hay transiciones disponibles desde el estado actual
+            break
+        
+        transicion = random.choice(list(transiciones.items()))
+        entrada, destino = transicion
+        cadena += entrada
+        estado_actual = destino
 
-    dot.render(view=False)
+        if estado_actual in afd.estados_aceptacion:
+            # Se alcanzó un estado de aceptación, la cadena es válida
+            return cadena
 
+    messagebox.showerror(title="Error", message="No se pudo generar una cadena de ejemplo")
+    return None
 
-def generarPDF(estados, estados_aceptacion, transiciones, estado_inicial, nombre,afd):
-    w, h = A4
-    c = canvas.Canvas("ReporteAFD_" + nombre + ".pdf", pagesize=A4)
-    c.setLineWidth(.3)
-    c.setFont('Helvetica', 22)
-
-    # Calcular posición x para centrar el texto
-    reporte_afd_text = "- Reporte Generado Sobre AFD '" + nombre + "' -"
-    reporte_afd_text_width = c.stringWidth(reporte_afd_text, "Helvetica", 22)
-    reporte_afd_text_x = (w - reporte_afd_text_width) / 2
-
-    c.drawString(reporte_afd_text_x, h - 30, reporte_afd_text)
-    c.setFont('Helvetica', 12)
-    c.drawString(30, h - 70, "Nombre del AFD:  " + nombre)
-    c.drawString(30, h - 90, "Estados:  " + str(estados))
-    c.drawString(30, h - 110, "Estado inicial:  " + estado_inicial)
-    c.drawString(30, h - 130, "Estados de aceptacion:  " + str(estados_aceptacion))
-    # Generar una linea por cada elemento en el array de transiciones
-    c.drawString(30, h - 150, "Listado de Transiciones:")
-    x = 190  # Posición vertical inicial
-    for transicion in transiciones:
-        c.drawString(30, h - x + 20, "     - "+ transicion)
-        x += 20  # Incrementar la posición vertical
-        c.setFont('Helvetica', 12)
-
-    image_path = nombre + ".png"
-    image = Image.open(image_path)
-    image_width, image_height = image.size
-    image_x = (w - image_width) / 2
-    image_y = 30  # Posición en el pie de la página
-
-    Cadena = Clases.AFD.generar_cadena_ejemplo(afd)
-    print(Cadena)
-
-    c.setFont('Helvetica', 12)
-
-    # Ajustar las coordenadas para que las líneas de texto estén encima de la imagen
-    c.drawString(30, image_y + image_height + 20, "------------------------------------------------------- Gráfica del AFD -------------------------------------------------------")
-    c.drawString(30, image_y + image_height + 40, "Cadena de ejemplo Generada Automaticamente: " + Cadena)
-
-    # Dibujar la imagen en el pie de la página
-    c.drawInlineImage(image_path, image_x, image_y, width=image_width, height=image_height)
-    c.save()
+def verificar_alfabeto(alfabeto):
+    if len(set(alfabeto)) != len(alfabeto):
+        messagebox.showerror(title="Error", message="El alfabeto no puede tener símbolos repetidos")
+        return False
+    else:
+        return True
 
 
-def generarReporteAFD(estados, estados_aceptacion, transiciones, transicionesN,estado_inicial, nombre,afd):
-    print("test1")
-    generarDOT(estados, estados_aceptacion, transiciones, estado_inicial,nombre)
-    print("test2")
-    generarPDF(estados, estados_aceptacion, transicionesN, estado_inicial, nombre,afd)
+def verificar_estado_inicial(estado_inicial, estados):
+    if estado_inicial not in estados:
+        messagebox.showerror(title="Error", message="El estado inicial no está en la lista de estados")
+        return False
+    else:
+        return True
+
+
+def estados_aceptacion(estados_aceptacion, estados):
+    for estado in estados_aceptacion:
+        if estado not in estados:
+            messagebox.showerror(title="Error", message="Los estados de aceptación no están en la lista de estados")
+            return False
     return True
+
+
+
+def verificar_transiciones(transiciones, estados, alfabeto):
+    for transicion in transiciones:
+        
+        elementos = transicion.split(",")
+        if len(elementos) != 3:
+            messagebox.showerror(title="Error", message="Las transiciones deben tener 3 elementos")
+            return False
+        origen, entrada, destino = transicion.split(',')
+
+        if origen not in estados or destino not in estados:
+            messagebox.showerror(title="Error", message="Los estados de origen y destino deben estar en la lista de estados")
+            return False
+        if entrada not in alfabeto:
+            messagebox.showerror(title="Error", message="El símbolo de entrada no está en el alfabeto")
+            return False
+
+    return True
+
+
+def Crear_AFD(nombre, estados, alfabeto, estado_inicial, estados_aceptacion, transiciones):
+    afd = AFD(nombre, estados, alfabeto, estado_inicial, estados_aceptacion, transiciones)
+    afd_registrados.append(afd)
+
+
+def listaAFD():
+    return afd_registrados
+
+
+def comprobar_cadena_afd(afd, cadena):
+    # Verificar si la cadena es válida en el AFD utilizando el método de Thompson
+    
+    # Obtener el estado inicial del AFD
+    estado_actual = afd.estado_inicial
+    
+    # Recorrer cada caracter de la cadena
+    for caracter in cadena:
+        # Verificar si el caracter está en el alfabeto del AFD
+        if caracter not in afd.alfabeto:
+            messagebox.showerror(title="Error", message=f"El caracter '{caracter}' no está en el alfabeto del AFD '{afd.nombre}'")
+            return False
+        
+        # Verificar si existe una transición para el estado actual y el caracter actual
+        if estado_actual not in afd.transiciones or caracter not in afd.transiciones[estado_actual]:
+            messagebox.showerror(title="Error", message=f"No hay una transición definida para el estado '{estado_actual}' y el caracter '{caracter}' en el AFD '{afd.nombre}'")
+            return False
+        
+        # Obtener el nuevo estado a partir de la transición
+        estado_actual = afd.transiciones[estado_actual][caracter]
+    
+    # Verificar si el estado actual es un estado de aceptación
+    if estado_actual in afd.estados_aceptacion:
+       
+        return f"La cadena '{cadena}' es válida en el AFD '{afd.nombre}'"
+    else:
+        return f"La cadena '{cadena}' no es válida en el AFD '{afd.nombre}'"

@@ -12,7 +12,7 @@ afd_registrados=[]
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
-class ValidarCadena(tk.Toplevel):
+class ValidarCadenaAFD(tk.Toplevel):
     def __init__(self):
         super().__init__()
         self.resizable(False, False)

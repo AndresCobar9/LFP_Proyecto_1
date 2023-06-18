@@ -17,8 +17,7 @@ class MenuPrincipal(tk.Tk):
     def __init__(self):
         super().__init__()
 
-        def mostrar_ventana_secundaria():
-            modulo_afn = Interfaz.ModuloAFN.moduloAFN()
+       
             
             
 
@@ -50,7 +49,7 @@ class MenuPrincipal(tk.Tk):
             relief="flat",
             font=("Helvetica", 16),
             text="Módulo AFN",
-            command=lambda: mostrar_ventana_secundaria
+            command=lambda: Interfaz.ModuloAFN.moduloAFN()
         )
         button_1.bind("<Enter>", on_enter)
         button_1.bind("<Leave>", on_leave)

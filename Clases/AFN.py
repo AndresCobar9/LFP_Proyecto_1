@@ -100,6 +100,9 @@ def Crear_AFN(nombre, estados, alfabeto, estado_inicial, estados_aceptacion, tra
 
 
 def listaAFN():
+    print("Lista de AFN registrados")
+    for afn in afn_registrados:
+        print(afn.transiciones)
     return afn_registrados
 
 

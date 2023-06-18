@@ -78,7 +78,9 @@ class moduloAFD(tk.Toplevel):
             highlightthickness=0,
                       relief="flat",
             font=("Helveltica", 16),
-            text="Ayuda"
+            text="Ayuda",
+            command=lambda: Interfaz.AyudaAFD.AyudaAFD()
+
         )
         button_3.place(
             x=0.0,
@@ -113,7 +115,9 @@ class moduloAFD(tk.Toplevel):
             highlightthickness=0,
             relief="flat",
             font=("Helveltica", 16),
-            text="Generar Reporte AFD"
+            text="Generar Reporte AFD",
+            command=lambda: Interfaz.GenerarReporteAFD.GenerarReporteAFD()
+
         )
         button_5.place(
             x=0.0,
